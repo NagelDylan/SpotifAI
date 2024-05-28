@@ -3,7 +3,6 @@ const ENERGY = 1;
 const DANCE = 2;
 const LIVELY = 3;
 
-
 class Song {    
     constructor(id, title) {
         this.id = id;
