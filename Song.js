@@ -1,0 +1,60 @@
+const VALENCE = 0;
+const ENERGY = 1;
+const DANCE = 2;
+const LIVELY = 3;
+
+
+class Song {    
+    constructor(id, title) {
+        this.id = id;
+        this.title = title;
+        this.genres = [];
+        this.vibes = [-1, -1, -1, -1];
+        this.language = '';
+        this.isLangCert = false;
+    }
+
+    setValence(valence) {
+        this.vibes[VALENCE] = valence;
+    }
+
+    setEnergy(energy) {
+        this.vibes[ENERGY] = energy;
+    }
+
+    setDance(dance) {
+        this.vibes[DANCE] = dance;
+    }
+
+    setLively(lively) {
+        this.vibes[LIVELY] = lively;
+    }
+
+    getVibes() {
+        return this.vibes;
+    }
+
+    addGenre(genre) {
+        this.genres[this.genres.length] = genre;
+    }
+
+    getGenres() {
+        return this.genres;
+    }
+
+    #analyzeLang() {
+
+    }
+
+    getLangCert() {
+        return this.isLangCert;
+    }
+}
+
+module.exports = {
+    Song,
+    VALENCE,
+    ENERGY,
+    DANCE,
+    LIVELY
+};
