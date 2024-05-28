@@ -46,6 +46,10 @@ class Song {
 
     }
 
+    getLang() {
+        return this.language;
+    }
+
     getLangCert() {
         return this.isLangCert;
     }
