@@ -22,45 +22,69 @@ const TRACK_ID = 0;
 let headers;
 
 //Event handler for reading lines
-let isFirstLine = true;
-readInterface.on("line", (line) => {
-    const row = line.split(",");
-    if (isFirstLine) {
-        headers = row;
-        isFirstLine = false;
-    }
-    else {
-        songObj = {};
 
-        for (let i = 1; i < row.length; i++)
-        {
-            songObj[headers[i]] = row[i];
-        }
-
-        output[row[TRACK_ID]] = songObj;
-    }
-});
-
-//Event handler for end of file
-readInterface.on("close", () => {
-    //Can do something here if u want
-});
-
-//Event handler for handling errors
-readInterface.on("error", (err) => {
-    console.error("Error reading the CSV file: ", err);
-});
-
-//~~~~~~~~~~~~~~~~~~~~~
-//NOTE: since functions run asyncrhounously, you need to use a promise or callback to ensure all the data's been loaded in
-// function getDance(trackID) {
-//     console.log(output);
-//     //return output.trackID;
-// }
-// getDance("7bF6tCO3gFb8INrEDcjNT5")
-// //console.log(getDance("7bF6tCO3gFb8INrEDcjNT5"));
-
-async function getDance(trackID) {
+function readFile()
+{
+    return new Promise((resolve, reject) => {
+        let isFirstLine = true;
+        readInterface.on("line", (line) => {
+            const row = line.split(",");
+            if (isFirstLine) {
+                headers = row;
+                isFirstLine = false;
+            }
+            else {
+                songObj = {};
     
+                for (let i = 1; i < row.length; i++)
+                {
+                    songObj[headers[i]] = row[i];
+                }
+    
+                output[row[TRACK_ID]] = songObj;
+            }
+        });
+
+        //Event handler for end of file
+        readInterface.on("close", () => {
+            resolve(output);
+        });
+
+        //Event handler for handling errors
+        readInterface.on("error", (err) => {
+            reject(err);
+        });
+    })
 }
 
+//~~~~~~~~~~~~~~~~~~~
+async function getDance(trackID) {
+    const output = await readFile();
+
+    return output[trackID].danceability;
+}
+
+async function getEnergy(trackID) {
+    const output = await readFile();
+
+    return output[trackID].energy;
+}
+
+async function getLively(trackID) {
+    const output = await readFile();
+
+    return output[trackID].liveness;
+}
+
+async function getValence(trackID) {
+    const output = await readFile();
+
+    return output[trackID].valence;
+}
+
+module.exports = {
+    getDance,
+    getEnergy,
+    getLively,
+    getValence
+};
