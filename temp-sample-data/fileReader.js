@@ -1,3 +1,19 @@
+//INSTRUCTIONS: 
+//-import the functions that are exported at the bottom of this file to the file you're working on.
+//-Use the template below to call for the desired function (added this to index.js as well)
+//TEMPLATE FOR CALLING ASYNC FILE IO FUNCTIONS:
+//~~~~~~~~~~
+// const TEMP_ID = '1e8PAfcKUYoKkxPhrHqw4x'; //Just to display ID
+
+// async function main() {
+//     let dance = await getDance(TEMP_ID);
+//     console.log(dance);
+// }
+
+// main()
+//~~~~~~~~~~~~~~~
+/////////////////
+
 const fs = require("fs");
 const readline = require("readline");
 
