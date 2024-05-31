@@ -1,15 +1,28 @@
 const SpotifyWebAPI = require('spotify-web-api-node');
+require('dotenv').config();
 
-const getTokenFromUrl = () => {
-    return window.location.hash
-    .substring(1)
-    .split("&")
-    .reduce((initial, item) => {
-        let parts = item.split('=');
-        initial[parts[0]] = decodeURIComponent(parts[1]);
-        return initial;
-    }, {});
-}
+//TO FIX: saying no token provided. Find out how to get token from server.js and import them here
+const spotifyApi = new SpotifyWebAPI({
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI
+});
+
+spotifyApi.setAccessToken(); //FILL IN FROM SERVER
+spotifyApi.setRefreshToken(); //FILL IN FROM SERVER
+
+setInterval(async() => {
+    const data = await spotifyAPI.resetAccessToken();
+    const accessTokenRefreshed = data.body['access_token'];
+    spotifyAPI.setAccessToken(accessTokenRefreshed);
+}, expiresIn/2*1000)
+
+spotifyApi.searchTracks('love')
+    .then(function(data) {
+        console.log('Search by "Love"', data.body);
+    }, function(err) {
+        console.error("Error: ", err);
+    })
 
 // require('dotenv').config();
 // const express = require('express');
