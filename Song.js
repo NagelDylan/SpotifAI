@@ -3,6 +3,9 @@ const ENERGY = 1;
 const DANCE = 2;
 const LIVELY = 3;
 
+const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
+const puppeteer = require('puppeteer');
+
 class Song {    
     constructor(id, title) {
         this.id = id;
@@ -33,10 +36,6 @@ class Song {
         return this.vibes;
     }
 
-    addGenre(genre) {
-        this.genres[this.genres.length] = genre;
-    }
-
     getGenres() {
         return this.genres;
     }
@@ -51,6 +50,23 @@ class Song {
 
     getLangCert() {
         return this.isLangCert;
+    }
+
+    async scrapeGenres() {    
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto(GENRE_FIND_LINK + this.id, { waitUntil: 'networkidle0'});
+    
+        const genres = await page.evaluate(() => {
+            const genreElements = document.querySelectorAll('.spotify-result .pl-tags a');
+            return Array.from(genreElements).map(link => link.textContent);
+        });
+        
+        this.genres = genres;
+
+        await browser.close();
+
+        console.log(this.genres);
     }
 }
 
