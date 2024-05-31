@@ -52,20 +52,17 @@ class Song {
         return this.isLangCert;
     }
 
-    async scrapeGenres() {    
+    async scrapeGenres() {   
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto(GENRE_FIND_LINK + this.id, { waitUntil: 'networkidle0'});
-    
+        await page.goto(GENRE_FIND_LINK + this.id);
+        await page.waitForSelector('.spotify-result .pl-tags a', { visible: true });
         const genres = await page.evaluate(() => {
             const genreElements = document.querySelectorAll('.spotify-result .pl-tags a');
             return Array.from(genreElements).map(link => link.textContent);
         });
-        
         this.genres = genres;
-
         await browser.close();
-
         console.log(this.genres);
     }
 }
