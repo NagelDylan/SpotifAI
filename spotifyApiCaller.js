@@ -1,28 +1,56 @@
-const SpotifyWebAPI = require('spotify-web-api-node');
 require('dotenv').config();
+const SpotifyWebAPI = require('spotify-web-api-node');
+const axios = require('axios');
+const tokenStore = require('./authorization_server/tokenStore');
 
-//TO FIX: saying no token provided. Find out how to get token from server.js and import them here
+const TOKEN_EXPIRATION_TIME = 3600;
+
 const spotifyApi = new SpotifyWebAPI({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     redirectUri: process.env.REDIRECT_URI
 });
 
-spotifyApi.setAccessToken(); //FILL IN FROM SERVER
-spotifyApi.setRefreshToken(); //FILL IN FROM SERVER
+const fetchTokens = async () => {
+    try {
+        const response = await axios.get('http://localhost:8888/tokens');
+        const tokens = response.data;
 
-setInterval(async() => {
-    const data = await spotifyAPI.resetAccessToken();
-    const accessTokenRefreshed = data.body['access_token'];
-    spotifyAPI.setAccessToken(accessTokenRefreshed);
-}, expiresIn/2*1000)
+        return tokens;
+    }
+    catch (err)
+    {
+        console.error('Error fetching tokens: ', err);
+    }
+}
 
-spotifyApi.searchTracks('love')
-    .then(function(data) {
-        console.log('Search by "Love"', data.body);
-    }, function(err) {
-        console.error("Error: ", err);
-    })
+fetchTokens().then(tokens => {
+    const accessToken = tokens.access_token;
+    const refreshToken = tokens.refresh_token;
+    
+    spotifyApi.setAccessToken(accessToken);
+    spotifyApi.setRefreshToken(refreshToken);
+});
+
+//TODO: find way to refresh token
+
+// setInterval(async() => {
+//     const data = await spotifyApi.resetAccessToken();
+//     console.log(data)
+//     const accessTokenRefreshed = data.body['access_token'];
+//     spotifyApi.setAccessToken(accessTokenRefreshed);
+// }, TOKEN_EXPIRATION_TIME * 0.8);
+
+
+
+// spotifyApi.searchTracks('love')
+//     .then(function(data) {
+//         console.log('Search by "Love"', data.body);
+//     }, function(err) {
+//         console.error("Error: ", err);
+// })
+
+//~~~~~~~~~~~~~~
 
 // require('dotenv').config();
 // const express = require('express');
