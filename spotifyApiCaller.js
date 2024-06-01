@@ -24,13 +24,42 @@ const fetchTokens = async () => {
     }
 }
 
-fetchTokens().then(tokens => {
+async function setTokens() {
+    const tokens = await fetchTokens();
     const accessToken = tokens.access_token;
     const refreshToken = tokens.refresh_token;
     
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
-});
+}
+
+//DEMO USAGE: ~~~~~~~~~~~
+// async function test() {
+//     await setTokens();
+//     console.log("Tokens set!")
+// }
+
+// test();
+
+async function searchTracks(searchQuery) {
+    await setTokens();
+
+    try {
+        const data = await spotifyApi.searchTracks(searchQuery);
+        return data.body;
+    } catch (err) {
+        console.error("Error: ", err);
+        throw err; // Propagate the error so it can be handled by the caller
+    }
+}
+
+async function main() {
+    let song = await searchTracks("Coconut");
+    console.log(song);
+}
+
+main()
+
 
 //TODO: find way to refresh token
 
