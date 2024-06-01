@@ -8,14 +8,8 @@ song1.setValence(0.5);
 
 console.log(song1.getGenres());
 
-//TEMPLATE FOR CALLING ASYNC FILE IO FUNCTIONS:
-//~~~~~~~~~~
-const TEMP_ID = '1e8PAfcKUYoKkxPhrHqw4x'; //Just to display ID
-
-async function main() {
-    let dance = await getDance(TEMP_ID);
-    console.log(dance);
-}
-
-main()
-//~~~~~~~~~~~~~~~
+//Working example of setting/getting vibes
+const song2 = new Song(TEMP_ID, 'Shake It Off')
+song2.setVibes().then(() => {
+    console.log(song2.getVibes())
+})

@@ -3,6 +3,8 @@ const ENERGY = 1;
 const DANCE = 2;
 const LIVELY = 3;
 
+const { getTrackVibes } = require('./spotify_api/infoCaller');
+
 class Song {    
     constructor(id, title) {
         this.id = id;
@@ -51,6 +53,15 @@ class Song {
 
     getLangCert() {
         return this.isLangCert;
+    }
+
+    async setVibes() {
+        const vibes = await getTrackVibes(this.id);
+
+        this.setValence(vibes[VALENCE]);
+        this.setEnergy(vibes[ENERGY]);
+        this.setDance(vibes[DANCE]);
+        this.setLively(vibes[LIVELY]);
     }
 }
 

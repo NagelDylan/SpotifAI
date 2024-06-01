@@ -1,7 +1,8 @@
+//TODO: import playlists from profile
+
 require('dotenv').config();
 const SpotifyWebAPI = require('spotify-web-api-node');
 const axios = require('axios');
-const tokenStore = require('./authorization_server/tokenStore');
 
 const TOKEN_EXPIRATION_TIME = 3600;
 
@@ -37,6 +38,7 @@ async function setTokens() {
 // async function test() {
 //     await setTokens();
 //     console.log("Tokens set!")
+//do stuff and searches here
 // }
 
 // test();
@@ -61,7 +63,8 @@ async function main() {
 main()
 
 
-//TODO: find way to refresh token
+//TODO: find way to refresh token. There is a GET method for this in server.js. Find how
+//to call/impliment 
 
 // setInterval(async() => {
 //     const data = await spotifyApi.resetAccessToken();
