@@ -1,28 +1,88 @@
-const SpotifyWebAPI = require('spotify-web-api-node');
-require('dotenv').config();
+//TODO: import playlists from profile
 
-//TO FIX: saying no token provided. Find out how to get token from server.js and import them here
+require('dotenv').config();
+const SpotifyWebAPI = require('spotify-web-api-node');
+const axios = require('axios');
+
+const TOKEN_EXPIRATION_TIME = 3600;
+
 const spotifyApi = new SpotifyWebAPI({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     redirectUri: process.env.REDIRECT_URI
 });
 
-spotifyApi.setAccessToken(); //FILL IN FROM SERVER
-spotifyApi.setRefreshToken(); //FILL IN FROM SERVER
+const fetchTokens = async () => {
+    try {
+        const response = await axios.get('http://localhost:8888/tokens');
+        const tokens = response.data;
 
-setInterval(async() => {
-    const data = await spotifyAPI.resetAccessToken();
-    const accessTokenRefreshed = data.body['access_token'];
-    spotifyAPI.setAccessToken(accessTokenRefreshed);
-}, expiresIn/2*1000)
+        return tokens;
+    }
+    catch (err)
+    {
+        console.error('Error fetching tokens: ', err);
+    }
+}
 
-spotifyApi.searchTracks('love')
-    .then(function(data) {
-        console.log('Search by "Love"', data.body);
-    }, function(err) {
+async function setTokens() {
+    const tokens = await fetchTokens();
+    const accessToken = tokens.access_token;
+    const refreshToken = tokens.refresh_token;
+    
+    spotifyApi.setAccessToken(accessToken);
+    spotifyApi.setRefreshToken(refreshToken);
+}
+
+//DEMO USAGE: ~~~~~~~~~~~
+// async function test() {
+//     await setTokens();
+//     console.log("Tokens set!")
+//do stuff and searches here
+// }
+
+// test();
+
+async function searchTracks(searchQuery) {
+    await setTokens();
+
+    try {
+        const data = await spotifyApi.searchTracks(searchQuery);
+        return data.body;
+    } catch (err) {
         console.error("Error: ", err);
-    })
+        throw err; // Propagate the error so it can be handled by the caller
+    }
+}
+
+async function main() {
+    let song = await searchTracks("Coconut");
+    console.log(song);
+}
+
+main()
+
+
+//TODO: find way to refresh token. There is a GET method for this in server.js. Find how
+//to call/impliment 
+
+// setInterval(async() => {
+//     const data = await spotifyApi.resetAccessToken();
+//     console.log(data)
+//     const accessTokenRefreshed = data.body['access_token'];
+//     spotifyApi.setAccessToken(accessTokenRefreshed);
+// }, TOKEN_EXPIRATION_TIME * 0.8);
+
+
+
+// spotifyApi.searchTracks('love')
+//     .then(function(data) {
+//         console.log('Search by "Love"', data.body);
+//     }, function(err) {
+//         console.error("Error: ", err);
+// })
+
+//~~~~~~~~~~~~~~
 
 // require('dotenv').config();
 // const express = require('express');

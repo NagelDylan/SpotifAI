@@ -7,6 +7,8 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
+const tokenStore = require('./tokenStore');
+
 var client_id = process.env.CLIENT_ID; // your clientId
 var client_secret = process.env.CLIENT_SECRET; // Your secret
 var redirect_uri = process.env.REDIRECT_URI; // Your redirect uri
@@ -78,6 +80,9 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
+        
+        //Set the tokens in the token store
+        tokenStore.setTokens({access_token, refresh_token});
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -132,6 +137,12 @@ app.get('/refresh_token', function(req, res) {
       });
     }
   });
+});
+
+//TEMP?:
+app.get('/tokens', (req, res) => {
+    const tokens = tokenStore.getTokens();
+    res.json(tokens);
 });
 
 console.log('Listening on 8888');
