@@ -5,6 +5,10 @@ const LIVELY = 3;
 
 const { getTrackVibes } = require('./spotify_api/infoCaller');
 
+const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
+const puppeteer = require('puppeteer');
+
+
 class Song {    
     constructor(id, title) {
         this.id = id;
@@ -35,10 +39,6 @@ class Song {
         return this.vibes;
     }
 
-    addGenre(genre) {
-        this.genres[this.genres.length] = genre;
-    }
-
     getGenres() {
         return this.genres;
     }
@@ -62,6 +62,19 @@ class Song {
         this.setEnergy(vibes[ENERGY]);
         this.setDance(vibes[DANCE]);
         this.setLively(vibes[LIVELY]);
+
+    async scrapeGenres() {   
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto(GENRE_FIND_LINK + this.id);
+        await page.waitForSelector('.spotify-result .pl-tags a', { visible: true });
+        const genres = await page.evaluate(() => {
+            const genreElements = document.querySelectorAll('.spotify-result .pl-tags a');
+            return Array.from(genreElements).map(link => link.textContent);
+        });
+        this.genres = genres;
+        await browser.close();
+        console.log(this.genres);
     }
 }
 
