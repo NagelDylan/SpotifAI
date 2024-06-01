@@ -12,5 +12,4 @@ song1.setVibes().then(() => {
 song1.setValence(0.5);
 
 const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
-
 song1.scrapeGenres();

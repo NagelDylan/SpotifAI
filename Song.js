@@ -62,6 +62,7 @@ class Song {
         this.setEnergy(vibes[ENERGY]);
         this.setDance(vibes[DANCE]);
         this.setLively(vibes[LIVELY]);
+    }
 
     async scrapeGenres() {   
         const browser = await puppeteer.launch();
