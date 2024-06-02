@@ -8,7 +8,6 @@ const { getTrackVibes } = require('./spotify_api/infoCaller');
 const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
 const puppeteer = require('puppeteer');
 
-
 class Song {    
     constructor(id, title) {
         this.id = id;
