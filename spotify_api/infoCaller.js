@@ -20,11 +20,11 @@ async function getToken() {
 
 async function fetchTrackInfo(songID) {
     const { access_token } = await getToken();
-    const response = await fetch("https://api.spotify.com/v1/tracks/" + songID, {
+    const response = await fetch("https://api.spotify.com/v1/tracks" + songID, {
         method: "GET",
         headers: { 'Authorization': 'Bearer ' + access_token }
     });
-
+    
     return await response.json();
 }
 
@@ -33,17 +33,35 @@ async function fetchTrackAudioFeatures(songID) {
     const response = await fetch("https://api.spotify.com/v1/audio-features/" + songID, {
         method: 'GET',
         headers: { 'Authorization': 'Bearer ' + access_token }
-    });
+    })
 
     return await response.json();
 }
 
 /**
- * @param {string} songID 
+ * @param {string | string[]} songID - The ID of the song or an array of song IDs.
  * @returns Track name, ID, artists, image URL, , release date, duration (in ms) and if explicit
  */
  async function getTrackDisplayInfo(songID) {
-    const displayInfo = await fetchTrackInfo(songID);
+    let trackPath = '';
+
+    if (typeof songID === 'string') {
+        trackPath = '/' + songID
+        console.log(trackPath)
+    } else {
+        trackPath = "?ids="
+
+        for (let i = 0; i < songID.length - 1; i++) {
+            trackPath += songID[i] + '%2C'
+        }
+
+        trackPath += songID[songID.length - 1]
+    }
+
+    console.log(trackPath);
+    const displayInfo = await fetchTrackInfo(trackPath);
+    console.log("DISPLAY INFO: ", displayInfo)
+
     const display = {
         name: displayInfo.name,
         id: displayInfo.id,
@@ -53,9 +71,21 @@ async function fetchTrackAudioFeatures(songID) {
         duration_ms: displayInfo.duration_ms,
         explicit: displayInfo.explicit
     }
-    
-    return display;
+
+    //console.log(display)
+
+    //return display;
 }
+//GOT IT WORKING! (%2C)
+
+//getTrackDisplayInfo(["7ouMYWpwJ422jRcDASZB7P%5PYQUBXc7NYeI1obMKSJK0%6f807x0ima9a1j3VPbc7VN"])
+//getTrackDisplayInfo(["7ouMYWpwJ422jRcDASZB7P","5PYQUBXc7NYeI1obMKSJK0"])
+//getTrackDisplayInfo("5PYQUBXc7NYeI1obMKSJK0")
+
+//fetchTrackInfo('/7ouMYWpwJ422jRcDASZB7P')
+//fetchTrackInfo('?ids=7ouMYWpwJ422jRcDASZB7P%2C5PYQUBXc7NYeI1obMKSJK0')
+//fetchTrackInfo('?ids=7ouMYWpwJ422jRcDASZB7P%2C4VqPOruhp5EdPBeR92t6lQ%2C2takcwOaAZWiXQijPHIx7B')
+
 
 /**
  * 
