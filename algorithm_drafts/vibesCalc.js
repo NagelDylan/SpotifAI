@@ -1,16 +1,12 @@
-const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require('./Song');
-
-// let danceMed;
-// let energyMed;
-// let livelyMed;
-let valenceMed;
+const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require('../Song');
 
 /**
  * 
  * @param {[Song]} songsArr 
+ * @param {int} vibe - As defined in the Song object
  */
-function getMedianDance(songsArr) {
-    songsArr.sort((a, b) => a - b);
+function getMedianVibe(songsArr, vibe) {
+    songsArr.sort((a, b) => a.getVibes()[vibe] - b.getVibes()[vibe]);
     const middleIndex = Math.floor(songsArr.length / 2);
 
     if (songsArr.length % 2 === 0) {
@@ -20,3 +16,5 @@ function getMedianDance(songsArr) {
         return songsArr[middleIndex];
     }
 }
+
+module.exports = { getMedianVibe }
