@@ -47,7 +47,6 @@ async function fetchTrackAudioFeatures(songID) {
 
     if (typeof songID === 'string') {
         trackPath = '/' + songID
-        console.log(trackPath)
     } else {
         trackPath = "?ids="
 
@@ -58,10 +57,27 @@ async function fetchTrackAudioFeatures(songID) {
         trackPath += songID[songID.length - 1]
     }
 
-    console.log(trackPath);
-    const displayInfo = await fetchTrackInfo(trackPath);
-    console.log("DISPLAY INFO: ", displayInfo)
+    let displayInfo = await fetchTrackInfo(trackPath);
 
+    if (Array.isArray(songID)) {
+        displayInfo = displayInfo.tracks
+        let displayArr = []
+
+        for (let i = 0; i < songID.length; i++) {
+            displayArr.push(extractDisplayInfo(displayInfo[i]))
+        }
+
+        console.log(displayArr)
+        return displayArr
+    }
+    else {
+        let display = extractDisplayInfo(displayInfo)
+        console.log(display)
+        return display
+    }
+}
+
+function extractDisplayInfo(displayInfo) {
     const display = {
         name: displayInfo.name,
         id: displayInfo.id,
@@ -72,20 +88,8 @@ async function fetchTrackAudioFeatures(songID) {
         explicit: displayInfo.explicit
     }
 
-    //console.log(display)
-
-    //return display;
+    return display
 }
-//GOT IT WORKING! (%2C)
-
-//getTrackDisplayInfo(["7ouMYWpwJ422jRcDASZB7P%5PYQUBXc7NYeI1obMKSJK0%6f807x0ima9a1j3VPbc7VN"])
-//getTrackDisplayInfo(["7ouMYWpwJ422jRcDASZB7P","5PYQUBXc7NYeI1obMKSJK0"])
-//getTrackDisplayInfo("5PYQUBXc7NYeI1obMKSJK0")
-
-//fetchTrackInfo('/7ouMYWpwJ422jRcDASZB7P')
-//fetchTrackInfo('?ids=7ouMYWpwJ422jRcDASZB7P%2C5PYQUBXc7NYeI1obMKSJK0')
-//fetchTrackInfo('?ids=7ouMYWpwJ422jRcDASZB7P%2C4VqPOruhp5EdPBeR92t6lQ%2C2takcwOaAZWiXQijPHIx7B')
-
 
 /**
  * 
@@ -100,4 +104,4 @@ async function getTrackVibes(songID) {
             audioFeatures['liveness']];
 }
 
-module.exports = { getTrackVibes };
+module.exports = { getTrackVibes, getTrackDisplayInfo };
