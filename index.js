@@ -1,5 +1,5 @@
 const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require('./Song');
-const { getMedianVibe } = require('./algorithm_drafts/vibesCalc')
+const { getMedianVibeSong, getFurthestVibeSong } = require('./algorithm_drafts/vibesCalc')
 
 const song1 = new Song('6habFhsOp2NvshLv26DqMb', 'Despacito');
 
@@ -28,7 +28,8 @@ song1.setValence(0.5);
 const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
 song1.scrapeGenres();
 
-//Working example of getting median vibes
+//Working example of getting song w/ median vibes & getting song w/ vibe furthest from median
 setVibes(arr).then(() => {
-    console.log("Song with specified median attribute: \n", getMedianVibe(arr, ENERGY))
+    console.log("Song with specified median attribute: \n", getMedianVibeSong(arr, ENERGY))
+    console.log("Song furthest from specified median attribute: \n", getFurthestVibeSong(arr, ENERGY))
 })
