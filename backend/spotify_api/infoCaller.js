@@ -100,6 +100,7 @@ function extractDisplayInfo(displayInfo) {
 }
 
 /**
+ *
  * @param {string} songID
  * @returns Array of track vibes (index order as specified in Song.js)
  */
