@@ -1,7 +1,6 @@
 import { Song, VALENCE, ENERGY, DANCE, LIVELY } from "../Song.js";
 
 /**
- *
  * @param {[Song]} songsArr
  * @param {int} vibe - As defined in the Song object
  * @return { Song }  the song object with the median vibe
