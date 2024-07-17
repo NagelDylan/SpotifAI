@@ -1,8 +1,8 @@
-const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require("./Song");
-const {
+import { Song, VALENCE, ENERGY, DANCE, LIVELY } from "./Song.js";
+import {
   getMedianVibeSong,
   getFurthestVibeSong,
-} = require("./algorithm_drafts/vibesCalc");
+} from "./algorithm_drafts/vibesCalc.js";
 
 const song1 = new Song("6habFhsOp2NvshLv26DqMb", "Despacito");
 
