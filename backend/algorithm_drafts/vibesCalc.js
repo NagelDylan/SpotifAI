@@ -1,7 +1,6 @@
 const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require("../Song");
 
 /**
- *
  * @param {[Song]} songsArr
  * @param {int} vibe - As defined in the Song object
  * @return { Song }  the song object with the median vibe
