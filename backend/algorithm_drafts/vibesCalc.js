@@ -1,4 +1,4 @@
-const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require("../Song");
+import { Song, VALENCE, ENERGY, DANCE, LIVELY } from "../Song.js";
 
 /**
  *
@@ -6,7 +6,7 @@ const { Song, VALENCE, ENERGY, DANCE, LIVELY } = require("../Song");
  * @param {int} vibe - As defined in the Song object
  * @return { Song }  the song object with the median vibe
  */
-function getMedianVibeSong(songsArr, vibe) {
+export function getMedianVibeSong(songsArr, vibe) {
   songsArr.sort((a, b) => a.getVibes()[vibe] - b.getVibes()[vibe]);
   const middleIndex = Math.floor(songsArr.length / 2);
 
@@ -22,7 +22,7 @@ function getMedianVibeSong(songsArr, vibe) {
  * @param {[Song]} songsArr
  * @param {int} vibe - As defined in the Song object
  */
-function getFurthestVibeSong(songsArr, vibe) {
+export function getFurthestVibeSong(songsArr, vibe) {
   const median = getMedianVibeSong(songsArr, vibe);
 
   songsArr.sort((a, b) => a.getVibes()[vibe] - b.getVibes()[vibe]);
@@ -39,5 +39,3 @@ function getFurthestVibeSong(songsArr, vibe) {
     return lowest;
   }
 }
-
-module.exports = { getMedianVibeSong, getFurthestVibeSong };

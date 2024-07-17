@@ -1,14 +1,14 @@
-const VALENCE = 0;
-const ENERGY = 1;
-const DANCE = 2;
-const LIVELY = 3;
+export const VALENCE = 0;
+export const ENERGY = 1;
+export const DANCE = 2;
+export const LIVELY = 3;
 
-const { getTrackVibes } = require("./spotify_api/infoCaller");
+import { getTrackVibes } from "./spotify_api/infoCaller.js"
+import puppeteer from "puppeteer";
 
 const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
-const puppeteer = require("puppeteer");
 
-class Song {
+export class Song {
   constructor(id, title) {
     this.id = id;
     this.title = title;
@@ -77,11 +77,3 @@ class Song {
     console.log(this.genres);
   }
 }
-
-module.exports = {
-  Song,
-  VALENCE,
-  ENERGY,
-  DANCE,
-  LIVELY,
-};
