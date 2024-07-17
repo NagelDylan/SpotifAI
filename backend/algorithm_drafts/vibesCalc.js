@@ -20,6 +20,7 @@ export function getMedianVibeSong(songsArr, vibe) {
  *
  * @param {[Song]} songsArr
  * @param {int} vibe - As defined in the Song object
+ * @return { Song }  the song object with the furthest vibe
  */
 export function getFurthestVibeSong(songsArr, vibe) {
   const median = getMedianVibeSong(songsArr, vibe);
@@ -37,4 +38,21 @@ export function getFurthestVibeSong(songsArr, vibe) {
   } else {
     return lowest;
   }
+}
+
+//~~Vibes to Text Conversion~~//
+
+//TEMP CONVERSION - update once more data is available
+/**
+ * 
+ * @param {[int]} vibes
+ * @return {string} 
+ */
+function getVibeDescription(vibes) {
+    vibeRanges = {
+        valence: null,
+        energy: null,
+        dance: null,
+        lively: null
+    }
 }
