@@ -39,8 +39,6 @@ export function getFurthestVibeSong(songsArr, vibe) {
     return lowest;
   }
 }
-<<<<<<< HEAD
-=======
 
 //~~Vibes to Text Conversion~~//
 
@@ -58,7 +56,3 @@ function getVibeDescription(vibes) {
         lively: null
     }
 }
-
-
-module.exports = { getMedianVibeSong, getFurthestVibeSong };
->>>>>>> b3d6bcc (working on storing ranges)
