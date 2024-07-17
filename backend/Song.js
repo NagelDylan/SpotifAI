@@ -3,7 +3,7 @@ const ENERGY = 1;
 const DANCE = 2;
 const LIVELY = 3;
 
-const { getTrackVibes } = require("../spotify_api/infoCaller");
+const { getTrackVibes } = require("./spotify_api/infoCaller");
 
 const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
 const puppeteer = require("puppeteer");
