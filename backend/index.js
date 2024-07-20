@@ -1,8 +1,6 @@
 import { Song, VALENCE, ENERGY, DANCE, LIVELY } from "./Song.js";
-import {
-  getMedianVibeSong,
-  getFurthestVibeSong,
-} from "./algorithm_drafts/vibesCalc.js";
+import { getMedianVibeSong, getFurthestVibeSong } from "./algorithm_drafts/vibesCalc.js";
+import { describeSongVibes } from "./algorithm_drafts/vibesCalc.js";
 
 const song1 = new Song("6habFhsOp2NvshLv26DqMb", "Despacito");
 
@@ -52,3 +50,6 @@ setVibes(arr).then(() => {
     getFurthestVibeSong(arr, ENERGY)
   );
 });
+
+//Works as intended: results aren't accurate in this case as vibes haven't been set asynchronously w/ this function call
+console.log("Vibe description: " + describeSongVibes(song1.getVibes()))

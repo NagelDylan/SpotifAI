@@ -43,16 +43,61 @@ export function getFurthestVibeSong(songsArr, vibe) {
 //~~Vibes to Text Conversion~~//
 
 //TEMP CONVERSION - update once more data is available
+const vibeRanges = {
+    valence: {
+        range: [0.2, 0.4, 0.6, 0.8, 1],
+        description: ["sad", "mildly sad", "neutral-mid happy", "happy", "incredibly happy"]
+    },
+    energy: {
+        range: [0.15, 0.4, 0.7, 1],
+        description: ["not energetic", "mildly energetic", "energetic", "ecstaticly energetic"]
+    },
+    dance: {
+        range: [0.3, 0.6, 1],
+        description: ["not danceable", "fairly danceable", "so danceable"]
+    },
+    lively: {
+        range: [0.25, 0.5, 0.8, 1],
+        description: ["not lively", "somewhat lively", "lively", "very lively"]
+    }
+}
+
 /**
  * 
  * @param {[int]} vibes
  * @return {string} 
  */
-function getVibeDescription(vibes) {
-    vibeRanges = {
-        valence: null,
-        energy: null,
-        dance: null,
-        lively: null
+//TODO: FIX. vibes.VALENCE doesn't work (is undefined), but vibes[0] does.
+export function describeSongVibes(vibes) {
+    const songVibes = {
+        valence: vibes[VALENCE],
+        energy: vibes[ENERGY],
+        dance: vibes[DANCE],
+        lively: vibes[LIVELY]
     }
+
+    console.log(songVibes)
+
+    let vibeDesc = "";
+
+    for (const vibe in vibeRanges) {
+        if (vibeRanges.hasOwnProperty(vibe) && songVibes.hasOwnProperty(vibe)) {
+            vibeDesc += getDescForVibe(vibeRanges[vibe], songVibes[vibe]) + " ";
+        }
+    }
+
+    return vibeDesc.trim();
+}
+
+function getDescForVibe(vibe, value) {
+    const ranges = vibe.range;
+    const descriptions = vibe.description;
+
+    for (let i = 0; i < ranges.length; i++) {
+        if (value <= ranges[i]) {
+            return descriptions[i];
+        }
+    }
+
+    return descriptions[descriptions.length - 1];
 }
