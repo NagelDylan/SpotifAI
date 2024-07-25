@@ -3,7 +3,7 @@ export const ENERGY = 1;
 export const DANCE = 2;
 export const LIVELY = 3;
 
-import { getTrackVibes } from "./spotify_api/infoCaller.js"
+import { getTrackVibes } from "./spotify_api-ARCHIVE/infoCaller.js" //TODO: Update how this works?
 import puppeteer from "puppeteer";
 
 const GENRE_FIND_LINK = "https://www.chosic.com/music-genre-finder/?track=";
