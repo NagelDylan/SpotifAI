@@ -4,9 +4,6 @@ import { useState, useEffect } from 'react'
 import Login from './Login';
 
 function App() {
-    const [searchInput, setSearchInput] = useState("")
-    console.log("HI!")
-    console.log(process.env.CLIENT_ID)
   return (
     <div className="App">
       <Login />
